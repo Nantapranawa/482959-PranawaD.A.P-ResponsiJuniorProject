@@ -41,7 +41,7 @@ namespace _482959_ResponsiJunpro
                 {
                     MessageBox.Show("Data karyawan berhasil diinputkan", "Terima kasih", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     conn.Close();
-                    //btnLoadData.PerformClick();
+                    btnLoad.PerformClick();
                     txtNama.Text = cbDept.Text = null;
                 }
             }
@@ -68,11 +68,11 @@ namespace _482959_ResponsiJunpro
                 cmd.Parameters.AddWithValue("_nama", txtNama.Text);
                 cmd.Parameters.AddWithValue("_id_dep", cbDept.Text);
 
-                if((int)cmd.ExecuteScalar() == 1)
+                if ((int)cmd.ExecuteScalar() == 1)
                 {
                     MessageBox.Show("Data karyawan berhasil diupdate", "Terima kasih", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     conn.Close();
-                    //btnLoadData.PerformClick();
+                    btnLoad.PerformClick();
                     txtNama.Text = cbDept.Text = null;
                     r = null;
                 }
@@ -86,7 +86,7 @@ namespace _482959_ResponsiJunpro
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
-            if( r ==null)
+            if (r == null)
             {
                 MessageBox.Show("Mohon pilih baris yang akan diupdate", "Warning!", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
@@ -103,7 +103,7 @@ namespace _482959_ResponsiJunpro
                     {
                         MessageBox.Show("Data karyawan berhasil dihapus", "Terima kasih", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         conn.Close();
-                        //btnLoadData.PerformClick();
+                        btnLoad.PerformClick();
                         txtNama.Text = cbDept.Text = null;
                         r = null;
                     }
@@ -116,12 +116,32 @@ namespace _482959_ResponsiJunpro
 
         private void dgvData_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex == 0)
+            if (e.RowIndex >= 0)
             {
                 r = dgvData.Rows[e.RowIndex];
 
                 txtNama.Text = r.Cells["_nama"].Value.ToString();
                 cbDept.Text = r.Cells["_id_dep"].Value.ToString();
+            }
+        }
+
+        private void btnLoad_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                conn.Open();
+                dgvData.DataSource = null;
+                sql = "select id_karyawan, nama, karyawan.id_dep, nama_dep, from karyawan inner join departemen on karyawan.id_dep = departemen.id_dep";
+                cmd = new NpgsqlCommand(sql, conn);
+                dt = new DataTable();
+                NpgsqlDataReader rd = cmd.ExecuteReader();
+                dt.Load(rd);
+                dgvData.DataSource = dt;
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("ERROR: " + ex.Message, "Fail!", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

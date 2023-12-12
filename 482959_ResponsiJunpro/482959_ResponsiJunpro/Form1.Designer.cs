@@ -37,6 +37,7 @@
             btnDelete = new Button();
             dgvData = new DataGridView();
             richTextBox1 = new RichTextBox();
+            btnLoad = new Button();
             ((System.ComponentModel.ISupportInitialize)dgvData).BeginInit();
             SuspendLayout();
             // 
@@ -125,11 +126,22 @@
             richTextBox1.TabIndex = 14;
             richTextBox1.Text = "ID Departemen :\n\nHR: HR\nENG: Engineer\nDEV: Developer\nPM: Product M\nFIN: Finance";
             // 
+            // btnLoad
+            // 
+            btnLoad.Location = new Point(470, 201);
+            btnLoad.Name = "btnLoad";
+            btnLoad.Size = new Size(75, 23);
+            btnLoad.TabIndex = 15;
+            btnLoad.Text = "button1";
+            btnLoad.UseVisualStyleBackColor = true;
+            btnLoad.Click += btnLoad_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(603, 484);
+            Controls.Add(btnLoad);
             Controls.Add(richTextBox1);
             Controls.Add(dgvData);
             Controls.Add(btnDelete);
@@ -157,5 +169,6 @@
         private Button btnDelete;
         private DataGridView dgvData;
         private RichTextBox richTextBox1;
+        private Button btnLoad;
     }
 }
